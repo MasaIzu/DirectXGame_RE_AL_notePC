@@ -38,6 +38,8 @@ public:
 	///</summary>
 	void Attack();
 
+	Vector3 bVelocity(Vector3& velocity, WorldTransform& worldTransform);
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
@@ -50,5 +52,7 @@ private:
 
 	//弾
 	std::list<std::unique_ptr<PlayerBullet>>bullets_;
+
+
 
 };

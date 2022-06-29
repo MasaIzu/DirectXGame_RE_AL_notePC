@@ -11,4 +11,5 @@ namespace AffinTrans {
 	Matrix4 Rotation(Vector3 rotation, int X_1_Y_2_Z_3_XYZ_6);
 	Matrix4 Move(Vector3 move);
 	void  affin(WorldTransform& affin);
+	Vector3 PlyerRotation(Vector3& velocity_, WorldTransform& worldTransform);
 }; // namespace AffinTrans

@@ -22,6 +22,11 @@ void Player::Move() {
 	//キャラクターの移動の速さ
 	const float kCharacterSpeed = 0.2f;
 
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
+		return bullet->IsDead();
+		});
+
 	//押した方向で移動ベクトルを変更
 	if (input_->PushKey(DIK_UP)) {
 		move = { 0, kCharacterSpeed, 0 };
@@ -94,12 +99,41 @@ void Player::Draw(ViewProjection& viewProjection_) {
 
 void Player::Attack() {
 	if (input_->PushKey(DIK_SPACE)) {
+
+		//弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+
+		//速度ベクトルを自機の向きに合わせて回転させる
+		velocity = bVelocity(velocity, worldTransform_);
+
+
 		//弾を生成し初期化
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 
 		//弾の登録
 		bullets_.push_back(std::move(newBullet));
 	}
 
+}
+
+Vector3 Player::bVelocity(Vector3& velocity, WorldTransform& worldTransform) {
+
+	Vector3 result = { 0, 0, 0 };
+
+	result.x = velocity.x * worldTransform.matWorld_.m[0][0] +
+		velocity.y * worldTransform.matWorld_.m[1][0] +
+		velocity.z * worldTransform.matWorld_.m[2][0];
+
+	result.y = velocity.x * worldTransform.matWorld_.m[0][1] +
+		velocity.y * worldTransform.matWorld_.m[1][1] +
+		velocity.z * worldTransform.matWorld_.m[2][1];
+
+	result.z = velocity.x * worldTransform.matWorld_.m[0][2] +
+		velocity.y * worldTransform.matWorld_.m[1][2] +
+		velocity.z * worldTransform.matWorld_.m[2][2];
+
+
+	return result;
 }

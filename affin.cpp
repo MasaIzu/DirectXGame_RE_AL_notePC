@@ -132,3 +132,10 @@ void AffinTrans::affin(WorldTransform& affin) {
 	affin.matWorld_ *= Move(affin.translation_);
 
 }
+
+Vector3 AffinTrans::PlyerRotation(Vector3& velocity_, WorldTransform& worldTransform)
+{
+	Vector3 matBuf(worldTransform.matWorld_.m[0][0], 0, worldTransform.matWorld_.m[2][0]);
+
+	return Vector3();
+}
