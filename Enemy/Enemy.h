@@ -29,6 +29,21 @@ public:
 	/// <summary>
 	void Draw(ViewProjection& viewProjection_);
 
+	/// <summary>
+	/// 接近
+	/// <summary>
+	void Approach();
+
+	/// <summary>
+	/// 離脱
+	/// <summary>
+	void Leave();
+
+	enum class Phase {
+		Approach,//接近する
+		Leave,//離脱する
+	};
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
@@ -46,4 +61,8 @@ private:
 	//キャラクターの移動ベクトル
 	Vector3 move = { kEnemyCharacterSpeed, 0, 0 };
 
+	//フェーズ
+	Phase phase_ = Phase::Approach;
+	//キャラクターのフェーズ移動の速さ
+	const float kEnemyPhaseCharacterSpeed = 0.1f;
 };
